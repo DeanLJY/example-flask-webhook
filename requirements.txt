@@ -6,7 +6,7 @@ Jinja2==3.1.2
 MarkupSafe==2.1.1
 Werkzeug==2.2.2
 alibabacloud_cams20200606==1.4.3
-alibabacloud_tea_openapi==0.3.8
-alibabacloud_tea_console==0.0.1
-alibabacloud_openapi_util==0.2.1
+alibabacloud_tea_openapi==0.3.9
+alibabacloud_tea_console==0.0.2
+alibabacloud_openapi_util==0.2.2
 alibabacloud_tea_util==0.3.12
