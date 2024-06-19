@@ -9,4 +9,4 @@ alibabacloud_cams20200606==1.4.3
 alibabacloud_tea_openapi==0.3.8
 alibabacloud_tea_console==0.0.1
 alibabacloud_openapi_util==0.2.1
-alibabacloud_tea_util==0.3.11
+alibabacloud_tea_util==0.3.12
