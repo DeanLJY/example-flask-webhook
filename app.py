@@ -1,14 +1,14 @@
 import os
 import sys
 
-from typing import List
+# from typing import List
 
-from alibabacloud_tea_openapi.client import Client as OpenApiClient
-from alibabacloud_tea_openapi import models as open_api_models
-from alibabacloud_tea_util import models as util_models
-from alibabacloud_openapi_util.client import Client as OpenApiUtilClient
-from alibabacloud_tea_console.client import Client as ConsoleClient
-from alibabacloud_tea_util.client import Client as UtilClient
+# from alibabacloud_tea_openapi.client import Client as OpenApiClient
+# from alibabacloud_tea_openapi import models as open_api_models
+# from alibabacloud_tea_util import models as util_models
+# from alibabacloud_openapi_util.client import Client as OpenApiUtilClient
+# from alibabacloud_tea_console.client import Client as ConsoleClient
+# from alibabacloud_tea_util.client import Client as UtilClient
 
 from flask import Flask, request, jsonify
 app = Flask(__name__)
@@ -17,8 +17,8 @@ app = Flask(__name__)
 def webhook_receiver():
     data = request.json  # Get the JSON data from the incoming request
     # Process the data and perform actions based on the event
-    print("Received webhook data:", data)
-    Sample.main(sys.argv[1:])
+    # print("Received webhook data:", data)
+    # Sample.main(sys.argv[1:])
     return jsonify({'message': 'Webhook received successfully'}), 200
 
 class Sample:
