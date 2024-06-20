@@ -2,7 +2,8 @@ import os
 import sys
 
 from typing import List
-
+from flask_caching import Cache
+import redis
 from alibabacloud_cams20200606.client import Client as cams20200606Client
 from alibabacloud_tea_openapi import models as open_api_models
 from alibabacloud_cams20200606 import models as cams_20200606_models
@@ -12,13 +13,30 @@ from alibabacloud_tea_util.client import Client as UtilClient
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
+app = Flask(__name__)
+app.config['CACHE_TYPE'] = 'redis'
+app.config['CACHE_REDIS_HOST'] = 'localhost'
+app.config['CACHE_REDIS_PORT'] = 6379
+app.config['CACHE_REDIS_DB'] = 0
+
+# Initialize Flask-Caching with Redis
+cache = Cache(app=app)
+cache.init_app(app)
+
+# Initialize Redis client
+redis_client = redis.Redis(host='localhost', port=6379, db=0)
 
 @app.route('/webhook', methods=['POST'])
+@cache.cached(timeout=60, key_prefix='items')
 def webhook_receiver():
     data = request.json  # Get the JSON data from the incoming request
+    cached_response = redis_client.get('items')
+    print(cached_response)
+    # if data['MessageId']==jsonify(data)['MessageId']:
+        
     # Process the data and perform actions based on the event
     print("Received webhook data:", data)
-    handleMsg()
+    # handleMsg()
     return jsonify({'message': 'Webhook received successfully'}), 200
 
 @app.route('/status', methods=['POST'])
