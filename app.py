@@ -18,8 +18,16 @@ def webhook_receiver():
     data = request.json  # Get the JSON data from the incoming request
     # Process the data and perform actions based on the event
     print("Received webhook data:", data)
-    handleMsg(sys.argv[1:])
+    handleMsg()
     return jsonify({'message': 'Webhook received successfully'}), 200
+
+@app.route('/status', methods=['POST'])
+def webhook_receiver():
+    data = request.json  # Get the JSON data from the incoming request
+    # Process the data and perform actions based on the event
+    print("Received")
+    handleMsg()
+    return jsonify({'message': 'Webhook status received successfully'}), 200
 
 def create_client() -> cams20200606Client:
     """
@@ -39,9 +47,7 @@ def create_client() -> cams20200606Client:
     return cams20200606Client(config)
 
 @staticmethod
-def handleMsg(
-    args: List[str],
-) -> None:
+def handleMsg():
     client = create_client()
     send_chatapp_message_request = cams_20200606_models.SendChatappMessageRequest(
         channel_type='whatsapp',
