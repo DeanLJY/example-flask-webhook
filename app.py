@@ -54,7 +54,7 @@ def handleMsg():
         message_type='text',
         from_='351915245709',
         to='85263114417',
-        content='{"text": "hello whatsapp", "link": "", "caption": "", "fileName": "" }'
+        content='{"text": "hello new", "link": "", "caption": "", "fileName": "" }'
     )
     # runtime = util_models.RuntimeOptions()
     try:
