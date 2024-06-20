@@ -18,7 +18,7 @@ def webhook_receiver():
     data = request.json  # Get the JSON data from the incoming request
     # Process the data and perform actions based on the event
     print("Received webhook data:", data)
-    # main(sys.argv[1:])
+    handleMsg(sys.argv[1:])
     return jsonify({'message': 'Webhook received successfully'}), 200
 
 def create_client() -> cams20200606Client:
@@ -30,17 +30,16 @@ def create_client() -> cams20200606Client:
     # The project code leakage may result in the leakage of AccessKey, posing a threat to the security of all resources under the account. The following code examples are for reference only.
     # It is recommended to use the more secure STS credential. For more credentials, please refer to: https://www.alibabacloud.com/help/en/alibaba-cloud-sdk-262060/latest/configure-credentials-378659.
     config = open_api_models.Config(
-        # Required, please ensure that the environment variables ALIBABA_CLOUD_ACCESS_KEY_ID is set.,
-        access_key_id='',
+        access_key_id=os.environ['ALIBABA_CLOUD_ACCESS_KEY_ID'],
         # Required, please ensure that the environment variables ALIBABA_CLOUD_ACCESS_KEY_SECRET is set.,
-        access_key_secret=''
+        access_key_secret=os.environ['ALIBABA_CLOUD_ACCESS_KEY_SECRET']
     )
     # See https://api.alibabacloud.com/product/cams.
     config.endpoint = f'cams.ap-southeast-1.aliyuncs.com'
     return cams20200606Client(config)
 
 @staticmethod
-def main(
+def handleMsg(
     args: List[str],
 ) -> None:
     client = Sample.create_client()
