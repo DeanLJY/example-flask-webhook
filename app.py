@@ -56,10 +56,10 @@ def handleMsg():
         to='85263114417',
         content='{"text": "hello whatsapp", "link": "", "caption": "", "fileName": "" }'
     )
-    runtime = util_models.RuntimeOptions()
+    # runtime = util_models.RuntimeOptions()
     try:
         # Copy the code to run, please print the return value of the API by yourself.
-        client.send_chatapp_message_with_options(send_chatapp_message_request, runtime)
+        client.send_chatapp_message(send_chatapp_message_request)
     except Exception as error:
         # Only a printing example. Please be careful about exception handling and do not ignore exceptions directly in engineering projects.
         # print error message
