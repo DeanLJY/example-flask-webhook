@@ -11,3 +11,4 @@ alibabacloud_tea_console==0.0.1
 alibabacloud_openapi_util==0.2.1
 alibabacloud_tea_util==0.3.12
 Flask-Caching==2.3.0
+redis==5.0.6
