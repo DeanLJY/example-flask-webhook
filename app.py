@@ -42,7 +42,7 @@ def create_client() -> cams20200606Client:
 def handleMsg(
     args: List[str],
 ) -> None:
-    client = Sample.create_client()
+    client = create_client()
     send_chatapp_message_request = cams_20200606_models.SendChatappMessageRequest(
         channel_type='whatsapp',
         type='message',
