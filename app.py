@@ -15,8 +15,8 @@ from flask import Flask, request, jsonify
 app = Flask(__name__)
 app = Flask(__name__)
 app.config['CACHE_TYPE'] = 'redis'
-app.config['CACHE_REDIS_HOST'] = 'localhost'
-app.config['CACHE_REDIS_PORT'] = 6379
+app.config['CACHE_REDIS_HOST'] = 'redis-14054.c300.eu-central-1-1.ec2.redns.redis-cloud.com:14054'
+app.config['CACHE_REDIS_PORT'] = 14054
 app.config['CACHE_REDIS_DB'] = 0
 
 # Initialize Flask-Caching with Redis
