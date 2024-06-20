@@ -22,11 +22,10 @@ def webhook_receiver():
     return jsonify({'message': 'Webhook received successfully'}), 200
 
 @app.route('/status', methods=['POST'])
-def webhook_receiver():
+def webhook_status_receiver():
     data = request.json  # Get the JSON data from the incoming request
     # Process the data and perform actions based on the event
     print("Received")
-    handleMsg()
     return jsonify({'message': 'Webhook status received successfully'}), 200
 
 def create_client() -> cams20200606Client:
