@@ -24,7 +24,8 @@ cache = Cache(app=app)
 cache.init_app(app)
 
 # Initialize Redis client
-redis_client = redis.Redis(host='redis-14054.c300.eu-central-1-1.ec2.redns.redis-cloud.com', port=14054, db=0)
+redis_client = redis.Redis(host='redis-14054.c300.eu-central-1-1.ec2.redns.redis-cloud.com', port=14054, db=0, password='wk9CAVnoyufUe0jaADxkvHBAujTPZSLG')
+
 
 @app.route('/webhook', methods=['POST'])
 @cache.cached(timeout=60, key_prefix='items')
