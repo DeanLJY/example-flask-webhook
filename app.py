@@ -22,7 +22,7 @@ cache.init_app(app)
 
 
 @app.route('/webhook', methods=['POST'])
-@cache.cached(timeout=60, key_prefix='items')
+@cache.cached(timeout=100, key_prefix='items')
 def webhook_receiver():
     data = request.json  # Get the JSON data from the incoming request
     cached_response = redis_client.get('items')
