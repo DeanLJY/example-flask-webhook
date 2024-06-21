@@ -35,14 +35,14 @@ def webhook_receiver():
     # Process the data and perform actions based on the event
     print("Received webhook data:", data)
     # handleMsg()
-    return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
+    return make_response(jsonify({'success':True}),200)
 
 @app.route('/status', methods=['POST'])
 def webhook_status_receiver():
     data = request.json  # Get the JSON data from the incoming request
     # Process the data and perform actions based on the event
     print("Received")
-    return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
+    return make_response(jsonify({'success':True}),200)
 
 def create_client() -> cams20200606Client:
     """
