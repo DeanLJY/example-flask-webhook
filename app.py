@@ -10,7 +10,7 @@ from alibabacloud_cams20200606 import models as cams_20200606_models
 from alibabacloud_tea_util import models as util_models
 from alibabacloud_tea_util.client import Client as UtilClient
 import json
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, make_response
 
 app = Flask(__name__)
 # Initialize Redis client
