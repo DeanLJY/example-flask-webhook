@@ -13,17 +13,12 @@ from alibabacloud_tea_util.client import Client as UtilClient
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
-app.config['CACHE_TYPE'] = 'redis'
-app.config['CACHE_REDIS_HOST'] = 'redis-14054.c300.eu-central-1-1.ec2.redns.redis-cloud.com'
-app.config['CACHE_REDIS_PORT'] = 14054
-app.config['CACHE_REDIS_DB'] = 0
-
-# Initialize Flask-Caching with Redis
-cache = Cache(app=app)
-cache.init_app(app)
-
 # Initialize Redis client
 redis_client = redis.Redis(host='redis-14054.c300.eu-central-1-1.ec2.redns.redis-cloud.com', port=14054, password='wk9CAVnoyufUe0jaADxkvHBAujTPZSLG')
+# Initialize Flask-Caching with Redis
+cache = Cache(app, config={'CACHE_TYPE': 'redis', 'CACHE_REDIS_HOST': redis_client})
+cache.init_app(app)
+
 
 
 @app.route('/webhook', methods=['POST'])
