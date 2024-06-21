@@ -23,18 +23,19 @@ cache.init_app(app)
 # cache.cached(timeout=100, key_prefix='items')
 @app.route('/webhook', methods=['POST'])
 def webhook_receiver():
-    data = request.json
-    # Get the JSON data from the incoming request
-    # wtsmsgid = data.__getattribute__('MessageId')
-    #    print(wtsmsgid)
+    data = request.json 
+    wtsmsgid = data
+    print(wtsmsgid['MessageId'])
+    redis_client.incrby(wtsmsgid['MessageId'],1)
+    count = redis_client.get(wtsmsgid['MessageId'])
+    if count == 1:
+        print('send msg')
     #redis_client.add(wtsmsgid)
-    # cached_response = redis_client.get('items')
-    # print(cached_response)
-    # if data['MessageId']==jsonify(data)['MessageId']:
-        
-    # Process the data and perform actions based on the event
+    #if jsonify(cached_response).data['MessageId']==jsonify(data)['MessageId']:
+     # Get the JSON data from the incoming request
+    # Process the data and perform actions based on the event   
     print("Received webhook data:", data)
-    # handleMsg()
+    #handleMsg()
     return make_response(jsonify({'success':True}),200)
 
 @app.route('/status', methods=['POST'])
