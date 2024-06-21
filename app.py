@@ -20,12 +20,11 @@ cache = Cache(app, config={'CACHE_TYPE': 'redis', 'CACHE_REDIS_HOST': redis_clie
 cache.init_app(app)
 
 
-
+# cache.cached(timeout=100, key_prefix='items')
 @app.route('/webhook', methods=['POST'])
-@cache.cached(timeout=100, key_prefix='items')
 def webhook_receiver():
     data = request.json  # Get the JSON data from the incoming request
-    cached_response = redis_client.get('items')
+    # cached_response = redis_client.get('items')
     print(cached_response)
     # if data['MessageId']==jsonify(data)['MessageId']:
         
