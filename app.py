@@ -25,7 +25,7 @@ cache.init_app(app)
 def webhook_receiver():
     data = request.json  # Get the JSON data from the incoming request
     # cached_response = redis_client.get('items')
-    print(cached_response)
+    # print(cached_response)
     # if data['MessageId']==jsonify(data)['MessageId']:
         
     # Process the data and perform actions based on the event
