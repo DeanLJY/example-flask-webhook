@@ -23,9 +23,10 @@ cache.init_app(app)
 # cache.cached(timeout=100, key_prefix='items')
 @app.route('/webhook', methods=['POST'])
 def webhook_receiver():
-    data = request.json  # Get the JSON data from the incoming request
+    data = request.json
+    # Get the JSON data from the incoming request
     # wtsmsgid = data.__getattribute__('MessageId')
-    #print(wtsmsgid)
+    #    print(wtsmsgid)
     #redis_client.add(wtsmsgid)
     # cached_response = redis_client.get('items')
     # print(cached_response)
