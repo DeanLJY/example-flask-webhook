@@ -9,7 +9,7 @@ from alibabacloud_tea_openapi import models as open_api_models
 from alibabacloud_cams20200606 import models as cams_20200606_models
 from alibabacloud_tea_util import models as util_models
 from alibabacloud_tea_util.client import Client as UtilClient
-
+import json
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
@@ -35,14 +35,14 @@ def webhook_receiver():
     # Process the data and perform actions based on the event
     print("Received webhook data:", data)
     # handleMsg()
-    return jsonify({'message': 'Webhook received successfully'}), 200
+    return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
 
 @app.route('/status', methods=['POST'])
 def webhook_status_receiver():
     data = request.json  # Get the JSON data from the incoming request
     # Process the data and perform actions based on the event
     print("Received")
-    return jsonify({'message': 'Webhook status received successfully'}), 200
+    return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
 
 def create_client() -> cams20200606Client:
     """
