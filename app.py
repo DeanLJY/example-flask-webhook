@@ -73,7 +73,7 @@ def handleMsg():
         channel_type='whatsapp',
         type='message',
         message_type='text',
-        from_='85262098942',
+        from_='454591457271',
         to='85263114417',
         content='{"text": "Good night", "link": "", "caption": "", "fileName": "" }'
     )
