@@ -24,10 +24,11 @@ cache.init_app(app)
 @app.route('/webhook', methods=['POST'])
 def webhook_receiver():
     data = request.json 
-    wtsmsgid = data['MessageId']
+    print(data)
+    wtsmsgid = data[0]['MessageId']
     payload=request.get_json()
     print(payload)
-    event_key= payload[wtsmsgid]
+    event_key= wtsmsgid
     if redis_client.exists(event_key):
         return jsonify({'message':'already proceeded'}), 200
     print('send message')
