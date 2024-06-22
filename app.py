@@ -23,20 +23,22 @@ cache.init_app(app)
 # cache.cached(timeout=100, key_prefix='items')
 @app.route('/webhook', methods=['POST'])
 def webhook_receiver():
-    data = request.json 
-    wtsmsgid = data
-    print(wtsmsgid['MessageId'])
-    redis_client.incrby(wtsmsgid['MessageId'],1)
-    count = redis_client.get(wtsmsgid['MessageId'])
-    if count == 1:
-        print('send msg')
+    #data = request.json 
+    #wtsmsgid = data['MessageId']
+    payload=request.get_json()
+    event_key= payload['MessageId']
+    if redis_client.exists(event_key):
+        return jsonify({'message':'already proceeded'}), 200
+    print('send message')
+    redis_client.set(event_key,'1',ex=3600)
     #redis_client.add(wtsmsgid)
     #if jsonify(cached_response).data['MessageId']==jsonify(data)['MessageId']:
      # Get the JSON data from the incoming request
     # Process the data and perform actions based on the event   
-    print("Received webhook data:", data)
-    #handleMsg()
+    print("Received webhook data:", payload)
+    handleMsg()
     return make_response(jsonify({'success':True}),200)
+    #return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
 
 @app.route('/status', methods=['POST'])
 def webhook_status_receiver():
@@ -69,9 +71,9 @@ def handleMsg():
         channel_type='whatsapp',
         type='message',
         message_type='text',
-        from_='351915245709',
+        from_='85262098942',
         to='85263114417',
-        content='{"text": "hello new", "link": "", "caption": "", "fileName": "" }'
+        content='{"text": "Good night", "link": "", "caption": "", "fileName": "" }'
     )
     # runtime = util_models.RuntimeOptions()
     try:
