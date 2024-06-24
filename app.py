@@ -74,7 +74,7 @@ def handleMsg():
         type='message',
         message_type='text',
         from_='454591457271',
-        to='85263114417',
+        to='85261396397',
         content='{"text": "Good night", "link": "", "caption": "", "fileName": "" }'
     )
     # runtime = util_models.RuntimeOptions()
