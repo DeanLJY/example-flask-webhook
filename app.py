@@ -52,7 +52,7 @@ def webhook_receiver():
     # Process the data and perform actions based on the event   
     print("Received webhook data:", payload)
 
-    EMSDreply = getEMSDreplay(payload['From'],'維修報障')
+    EMSDreply = getEMSDreplay(data[0]['From'],'維修報障')
 
     
     handleMsg(EMSDreply, data[0]['From'])
