@@ -12,6 +12,19 @@ from alibabacloud_tea_util.client import Client as UtilClient
 import json
 from flask import Flask, request, jsonify, make_response
 
+# get Website
+import requests
+import time
+import math
+import json
+
+ts = math.ceil(time.time())
+url_test = "https://emsd.ibot.cn/emsdbot/irobot/ask4Json?t="+str(ts)
+url_pd = "https://cscagent.emsd.gov.hk/emsdbot/irobot/ask4Json?t="+str(ts)
+
+
+#
+
 app = Flask(__name__)
 # Initialize Redis client
 redis_client = redis.Redis(host='redis-14054.c300.eu-central-1-1.ec2.redns.redis-cloud.com', port=14054, password='wk9CAVnoyufUe0jaADxkvHBAujTPZSLG')
@@ -38,7 +51,11 @@ def webhook_receiver():
      # Get the JSON data from the incoming request
     # Process the data and perform actions based on the event   
     print("Received webhook data:", payload)
-    handleMsg(data[0]['Message'], data[0]['From'])
+
+    EMSDreply = getEMSDreplay(payload['From'],'維修報障')
+
+    
+    handleMsg(EMSDreply, data[0]['From'])
     return make_response(jsonify({'success':True}),200)
     #return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
 
@@ -88,6 +105,32 @@ def handleMsg(inputMsg, receiver):
         # Please click on the link below for diagnosis.
         print(error.data.get("Recommend"))
         UtilClient.assert_as_string(error.message)
+
+# Website 
+def getEMSDreplay(msgFrom,inputMsg):
+    data = {
+        "sessionId": "77",
+        "userId": "234324",
+        "platform": "web",
+        "question":inputMsg,
+        "lang":"tc"
+    }
+
+    if data['question']!="維修報障":  
+        jsession = redis_client.get(msgFrom)
+        #j_cookies = Path("cookies.json").read_text()  # save them t
+        #response = requests.post(url_pd, json=data,cookies={'JSESSIONID':j_cookies})
+        response = requests.post(url_pd, json=data,cookies={'JSESSIONID':jsession})
+    else:
+        response = requests.post(url_pd, json=data)
+
+    if data['question']=="維修報障":  
+        redis_client.hmset(msgFrom,response.headers['Set-cookie'].split(";")[0].split("'")[0].split("=")[1])
+        redis_client.expire(msgFrom, 259200)
+        #Path("cookies.json").write_text(response.headers['Set-cookie'].split(";")[0].split("'")[0].split("=")[1])
+    
+    return response.json()['content']
+
 
 
 if __name__ == '__main__':
