@@ -27,7 +27,7 @@ url_pd = "https://cscagent.emsd.gov.hk/emsdbot/irobot/ask4Json?t="+str(ts)
 
 app = Flask(__name__)
 # Initialize Redis client
-redis_client = redis.Redis(host='redis-14054.c300.eu-central-1-1.ec2.redns.redis-cloud.com', port=14054, password='wk9CAVnoyufUe0jaADxkvHBAujTPZSLG')
+redis_client = redis.Redis(host='redis-18057.c14.us-east-1-3.ec2.redns.redis-cloud.com', port=18057, password='utgvvXEMTVMuMdIhHcWVZmKS31UeJwqN')
 # Initialize Flask-Caching with Redis
 cache = Cache(app, config={'CACHE_TYPE': 'redis', 'CACHE_REDIS_HOST': redis_client})
 cache.init_app(app)
@@ -120,15 +120,25 @@ def getEMSDreplay(msgFrom,inputMsg):
         jsession = redis_client.get(msgFrom)
         #j_cookies = Path("cookies.json").read_text()  # save them t
         #response = requests.post(url_pd, json=data,cookies={'JSESSIONID':j_cookies})
-        response = requests.post(url_pd, json=data,cookies={'JSESSIONID':jsession['js']})
+        if jsession != None:
+            response = requests.post(url_pd, json=data,cookies={'JSESSIONID':jsession['js']})
+        else:
+            response = requests.post(url_pd, json=data)
     else:
         response = requests.post(url_pd, json=data)
 
 
     setcookie = response.headers.get('Set-cookie')
+    
     if setcookie != None:
-        redis_client.hmset(msgFrom,{'js':response.headers['Set-cookie'].split(";")[0].split("'")[0].split("=")[1]})
-        redis_client.expire(msgFrom, 259200)
+        jsession = redis_client.get(msgFrom)
+        if jsession != None:
+            redis_client.hset(msgFrom,{'js':response.headers['Set-cookie'].split(";")[0].split("'")[0].split("=")[1]})
+            redis_client.expire(msgFrom, 259200)
+        else:
+            redis_client.hmset(msgFrom,{'js':response.headers['Set-cookie'].split(";")[0].split("'")[0].split("=")[1]})
+            redis_client.expire(msgFrom, 259200)
+            
     #Path("cookies.json").write_text(response.headers['Set-cookie'].split(";")[0].split("'")[0].split("=")[1])
     
     return response.json()['content']
