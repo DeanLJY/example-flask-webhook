@@ -38,7 +38,7 @@ def webhook_receiver():
      # Get the JSON data from the incoming request
     # Process the data and perform actions based on the event   
     print("Received webhook data:", payload)
-    handleMsg(data[0]['Message])
+    handleMsg(data[0]['Message'])
     return make_response(jsonify({'success':True}),200)
     #return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
 
