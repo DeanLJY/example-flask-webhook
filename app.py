@@ -92,7 +92,7 @@ def handleMsg(inputMsg, receiver):
         message_type='text',
         from_='85262098942',
         to=receiver,
-        content=str({"text": "I hear you say "+inputMsg, "link": "", "caption": "", "fileName": "" })
+        content=str({"text": inputMsg, "link": "", "caption": "", "fileName": "" })
     )
     # runtime = util_models.RuntimeOptions()
     try:
