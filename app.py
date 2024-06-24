@@ -125,8 +125,10 @@ def getEMSDreplay(msgFrom,inputMsg):
         response = requests.post(url_pd, json=data)
 
     if data['question']=="維修報障":  
-        redis_client.hmset(msgFrom,{'js':response.headers['Set-cookie'].split(";")[0].split("'")[0].split("=")[1]})
-        redis_client.expire(msgFrom, 259200)
+        setcookie = response.headers.get('Set-cookie')
+        if setcookie != None:
+            redis_client.hmset(msgFrom,{'js':response.headers['Set-cookie'].split(";")[0].split("'")[0].split("=")[1]})
+            redis_client.expire(msgFrom, 259200)
         #Path("cookies.json").write_text(response.headers['Set-cookie'].split(";")[0].split("'")[0].split("=")[1])
     
     return response.json()['content']
