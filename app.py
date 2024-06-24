@@ -75,7 +75,7 @@ def handleMsg(inputMsg):
         message_type='text',
         from_='85262098942',
         to='85261396397',
-        content='{"text": "I hear you said "+inputMsg, "link": "", "caption": "", "fileName": "" }'
+        content='{"text": "I hear you said ",'+inputMsg+' "link": "", "caption": "", "fileName": "" }'
     )
     # runtime = util_models.RuntimeOptions()
     try:
