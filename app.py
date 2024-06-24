@@ -38,7 +38,7 @@ def webhook_receiver():
      # Get the JSON data from the incoming request
     # Process the data and perform actions based on the event   
     print("Received webhook data:", payload)
-    handleMsg(data[0]['Message'])
+    handleMsg(data[0]['Message'], data[0]['From'])
     return make_response(jsonify({'success':True}),200)
     #return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
 
@@ -67,15 +67,15 @@ def create_client() -> cams20200606Client:
     return cams20200606Client(config)
 
 @staticmethod
-def handleMsg(inputMsg):
+def handleMsg(inputMsg, receiver):
     client = create_client()
     send_chatapp_message_request = cams_20200606_models.SendChatappMessageRequest(
         channel_type='whatsapp',
         type='message',
         message_type='text',
         from_='85262098942',
-        to='85261396397',
-        content={"text": "I hear you said "+inputMsg,"link": "", "caption": "", "fileName": ""}
+        to=receiver,
+        content=str({"text": "Good night"+inputMsg, "link": "", "caption": "", "fileName": "" })
     )
     # runtime = util_models.RuntimeOptions()
     try:
