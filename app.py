@@ -120,6 +120,7 @@ def getEMSDreplay(msgFrom,inputMsg):
         jsession = redis_client.hget('jkey',msgFrom)
         #j_cookies = Path("cookies.json").read_text()  # save them t
         #response = requests.post(url_pd, json=data,cookies={'JSESSIONID':j_cookies})
+        print(jsession.decode('utf-8'))
         if jsession != None:
             response = requests.post(url_pd, json=data,cookies={'JSESSIONID':jsession.decode('utf-8')})
         else:
