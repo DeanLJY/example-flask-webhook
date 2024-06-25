@@ -117,7 +117,7 @@ def getEMSDreplay(msgFrom,inputMsg):
     }
 
     if data['question']!="維修報障":  
-        jsession = redis_client.hget(msgFrom)
+        jsession = redis_client.hget(msgFrom,'js')
         #j_cookies = Path("cookies.json").read_text()  # save them t
         #response = requests.post(url_pd, json=data,cookies={'JSESSIONID':j_cookies})
         if jsession != None:
@@ -131,7 +131,7 @@ def getEMSDreplay(msgFrom,inputMsg):
     setcookie = response.headers.get('Set-cookie')
     
     if setcookie != None:
-        jsession = redis_client.hget(msgFrom)
+        jsession = redis_client.hget(msgFrom,'js')
         if jsession != None:
             redis_client.hset(msgFrom,{'js':response.headers['Set-cookie'].split(";")[0].split("'")[0].split("=")[1]})
             redis_client.expire(msgFrom, 259200)
