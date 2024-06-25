@@ -110,7 +110,7 @@ def handleMsg(inputMsg, receiver):
 def getEMSDreplay(msgFrom,inputMsg):
     data = {
         "sessionId": "77",
-        "userId": "234324",
+        "userId": msgFrom,
         "platform": "web",
         "question":inputMsg,
         "lang":"tc"
