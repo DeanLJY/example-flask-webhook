@@ -121,7 +121,7 @@ def getEMSDreplay(msgFrom,inputMsg):
         #j_cookies = Path("cookies.json").read_text()  # save them t
         #response = requests.post(url_pd, json=data,cookies={'JSESSIONID':j_cookies})
         if jsession != None:
-            response = requests.post(url_pd, json=data,cookies={'JSESSIONID':jsession['js']})
+            response = requests.post(url_pd, json=data,cookies={'JSESSIONID':jsession})
         else:
             response = requests.post(url_pd, json=data)
     else:
