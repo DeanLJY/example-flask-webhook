@@ -173,7 +173,7 @@ def getEMSDreplay(msgFrom,inputMsg):
         nodeData = response.json()['commands'][3]['args'][0]
         nodeDataJson = json.loads(nodeData)
     except:
-        nodeDataJson = {'nodeName':"no"}
+        nodeDataJson = [{'nodeName':"no"}]
     return response.json()['content'], nodeDataJson
 
 
