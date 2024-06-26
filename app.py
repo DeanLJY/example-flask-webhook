@@ -60,7 +60,7 @@ def webhook_receiver():
     print("Received webhook data:", payload)
 
     EMSDreply, nodeName = getEMSDreplay(data[0]['From'],data[0]['Message'])
-    if nodeName['nodeName'] in templateList:
+    if nodeName[0]['nodeName'] in templateList:
         handleMsgTemplate(nodeNameTemplate[nodeName],data[0]['From'])
     else:
         handleMsg(EMSDreply, data[0]['From'])
