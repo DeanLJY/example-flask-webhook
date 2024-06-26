@@ -34,8 +34,8 @@ cache.init_app(app)
 
 
 nodeNameTemplate = {
-    '補充稱呼':'965465089543114752',
-    '咨詢裝置':'965466943903645696',
+    '請問你係':'965465089543114752',
+    '請提供要報維修':'965466943903645696',
 }
 
 templateList =['補充稱呼','咨詢裝置']
@@ -59,8 +59,8 @@ def webhook_receiver():
     # Process the data and perform actions based on the event   
     print("Received webhook data:", payload)
 
-    EMSDreply, nodeName = getEMSDreplay(data[0]['From'],data[0]['Message'])
-    if nodeName in templateList:
+    EMSDreply = getEMSDreplay(data[0]['From'],data[0]['Message'])
+    if nodeName in EMSDreply:
         handleMsgTemplate(nodeNameTemplate[nodeName],data[0]['From'])
     else:
         handleMsg(EMSDreply, data[0]['From'])
@@ -170,7 +170,7 @@ def getEMSDreplay(msgFrom,inputMsg):
             
     #Path("cookies.json").write_text(response.headers['Set-cookie'].split(";")[0].split("'")[0].split("=")[1])
     
-    return response.json()['content'], response.json()['commands'][2]['args'][0]['nodeName']
+    return response.json()['content']
 
 
 
