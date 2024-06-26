@@ -34,8 +34,8 @@ cache.init_app(app)
 
 
 nodeNameTemplate = {
-    '請問你係':'965465089543114752',
-    '請提供要報維修':'965466943903645696',
+    '補充稱呼':'965465089543114752',
+    '咨詢裝置':'965466943903645696',
 }
 
 templateList =['補充稱呼','咨詢裝置']
@@ -59,8 +59,8 @@ def webhook_receiver():
     # Process the data and perform actions based on the event   
     print("Received webhook data:", payload)
 
-    EMSDreply = getEMSDreplay(data[0]['From'],data[0]['Message'])
-    if nodeName in EMSDreply:
+    EMSDreply, nodeName = getEMSDreplay(data[0]['From'],data[0]['Message'])
+    if nodeName['nodeName'] in templateList:
         handleMsgTemplate(nodeNameTemplate[nodeName],data[0]['From'])
     else:
         handleMsg(EMSDreply, data[0]['From'])
@@ -169,8 +169,9 @@ def getEMSDreplay(msgFrom,inputMsg):
         redis_client.expire(msgFrom, 259200)
             
     #Path("cookies.json").write_text(response.headers['Set-cookie'].split(";")[0].split("'")[0].split("=")[1])
-    
-    return response.json()['content']
+    nodeData = response.json()['commands'][3]['args'][0]
+    nodeDataJson = json.loads(nodeData)
+    return response.json()['content'], nodeDataJson
 
 
 
