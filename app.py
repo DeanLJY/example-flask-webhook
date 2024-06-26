@@ -36,9 +36,10 @@ cache.init_app(app)
 nodeNameTemplate = {
     '補充稱呼':'965465089543114752',
     '咨詢裝置':'965466943903645696',
+    '維修報障': '964527751929401344'
 }
 
-templateList =['補充稱呼','咨詢裝置']
+templateList =['補充稱呼','咨詢裝置','維修報障']
 
 # cache.cached(timeout=100, key_prefix='items')
 @app.route('/webhook', methods=['POST'])
@@ -173,6 +174,9 @@ def getEMSDreplay(msgFrom,inputMsg):
         nodeDataJson = json.loads(nodeData)
     except:
         nodeDataJson = [{'nodeName':"no"}]
+
+    if "維修報障" in response.json():
+        nodeDataJson = [{'nodeName':"維修報障"}]
     return response.json()['content'], nodeDataJson
 
 
