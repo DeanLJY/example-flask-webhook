@@ -121,7 +121,6 @@ def handleMsgTemplate(template, receiver):
     send_chatapp_message_request = cams_20200606_models.SendChatappMessageRequest(
         channel_type='whatsapp',
         type='template',
-        message_type='text',
         from_='85262098942',
         to=receiver,
         template_code=template,
