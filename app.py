@@ -175,7 +175,7 @@ def getEMSDreplay(msgFrom,inputMsg):
     except:
         nodeDataJson = [{'nodeName':"no"}]
 
-    if "維修報障" in response.json():
+    if "nodeName" in response.json():
         nodeDataJson = [{'nodeName':"維修報障"}]
     return response.json()['content'], nodeDataJson
 
