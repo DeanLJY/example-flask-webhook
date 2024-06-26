@@ -169,8 +169,11 @@ def getEMSDreplay(msgFrom,inputMsg):
         redis_client.expire(msgFrom, 259200)
             
     #Path("cookies.json").write_text(response.headers['Set-cookie'].split(";")[0].split("'")[0].split("=")[1])
-    nodeData = response.json()['commands'][3]['args'][0]
-    nodeDataJson = json.loads(nodeData)
+    try:
+        nodeData = response.json()['commands'][3]['args'][0]
+        nodeDataJson = json.loads(nodeData)
+    except:
+        nodeDataJson = {'nodeName':"no"}
     return response.json()['content'], nodeDataJson
 
 
