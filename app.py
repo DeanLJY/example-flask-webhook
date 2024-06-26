@@ -33,6 +33,13 @@ cache = Cache(app, config={'CACHE_TYPE': 'redis', 'CACHE_REDIS_HOST': redis_clie
 cache.init_app(app)
 
 
+nodeNameTemplate = {
+    '補充稱呼':'965465089543114752',
+    '咨詢裝置':'965466943903645696',
+}
+
+templateList =['補充稱呼','咨詢裝置']
+
 # cache.cached(timeout=100, key_prefix='items')
 @app.route('/webhook', methods=['POST'])
 def webhook_receiver():
@@ -52,10 +59,11 @@ def webhook_receiver():
     # Process the data and perform actions based on the event   
     print("Received webhook data:", payload)
 
-    EMSDreply = getEMSDreplay(data[0]['From'],data[0]['Message'])
-
-    
-    handleMsg(EMSDreply, data[0]['From'])
+    EMSDreply, nodeName = getEMSDreplay(data[0]['From'],data[0]['Message'])
+    if nodeName in templateList:
+        handleMsgTemplate(nodeNameTemplate[nodeName],data[0]['From'])
+    else:
+        handleMsg(EMSDreply, data[0]['From'])
     return make_response(jsonify({'success':True}),200)
     #return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
 
@@ -106,6 +114,31 @@ def handleMsg(inputMsg, receiver):
         print(error.data.get("Recommend"))
         UtilClient.assert_as_string(error.message)
 
+
+@staticmethod
+def handleMsgTemplate(template, receiver):
+    client = create_client()
+    send_chatapp_message_request = cams_20200606_models.SendChatappMessageRequest(
+        channel_type='whatsapp',
+        type='template',
+        message_type='text',
+        from_='85262098942',
+        to=receiver,
+        template_code=template,
+        language='zh_HK'
+    )
+    # runtime = util_models.RuntimeOptions()
+    try:
+        # Copy the code to run, please print the return value of the API by yourself.
+        client.send_chatapp_message(send_chatapp_message_request)
+    except Exception as error:
+        # Only a printing example. Please be careful about exception handling and do not ignore exceptions directly in engineering projects.
+        # print error message
+        print(error.message)
+        # Please click on the link below for diagnosis.
+        print(error.data.get("Recommend"))
+        UtilClient.assert_as_string(error.message)
+
 # Website 
 def getEMSDreplay(msgFrom,inputMsg):
     data = {
@@ -137,10 +170,9 @@ def getEMSDreplay(msgFrom,inputMsg):
             
     #Path("cookies.json").write_text(response.headers['Set-cookie'].split(";")[0].split("'")[0].split("=")[1])
     
-    return response.json()['content']
+    return response.json()['content'], response.json()['commands'][2]['args'][0]['nodeName']
 
 
 
 if __name__ == '__main__':
     app.run()
-
