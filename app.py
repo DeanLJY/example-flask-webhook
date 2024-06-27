@@ -176,7 +176,7 @@ def getEMSDreplay(msgFrom,inputMsg):
     #Path("cookies.json").write_text(response.headers['Set-cookie'].split(";")[0].split("'")[0].split("=")[1])
     if "nodeName" in response.json():
         nodeDataJson = [{'nodeName':"維修報障"}]
-    elif response.json['type']==0:
+    elif response.json()['type']==0:
         nodeDataJson = [{'nodeName':"新對話"}]
     else:
         try:
