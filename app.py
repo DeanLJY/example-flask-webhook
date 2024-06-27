@@ -62,9 +62,9 @@ def webhook_receiver():
 
     EMSDreply, nodeName = getEMSDreplay(data[0]['From'],data[0]['Message'])
     if nodeName[0]['nodeName'] in templateList:
-        handleMsgTemplate(nodeNameTemplate[nodeName[0]['nodeName']],payload['From'])
+        handleMsgTemplate(nodeNameTemplate[nodeName[0]['nodeName']],data[0]['From'])
     else:
-        handleMsg(EMSDreply, payload['From'])
+        handleMsg(EMSDreply, data[0]['From'])
     return make_response(jsonify({'success':True}),200)
     #return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
 
