@@ -60,6 +60,11 @@ def webhook_receiver():
     # Process the data and perform actions based on the event   
     print("Received webhook data:", payload)
 
+    if 'content' not in data[0]:
+        defaultReplay(data[0]['From'])
+        return jsonify({'message':'Replied default message'}), 200
+    
+
     EMSDreply, nodeName = getEMSDreplay(data[0]['From'],data[0]['Message'])
     if nodeName[0]['nodeName'] in templateList:
         handleMsgTemplate(nodeNameTemplate[nodeName[0]['nodeName']],data[0]['From'])
@@ -183,7 +188,8 @@ def getEMSDreplay(msgFrom,inputMsg):
         #nodeDataJson = [{'nodeName':"維修報障"}]
     return response.json()['content'], nodeDataJson
 
-
+def defaultReplay(msgFrom):
+    handleMsgTemplate(966145163388940288, msgFrom)
 
 if __name__ == '__main__':
     app.run()
