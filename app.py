@@ -36,10 +36,11 @@ cache.init_app(app)
 nodeNameTemplate = {
     '補充稱呼':'965465089543114752',
     '咨詢裝置':'965466943903645696',
-    '上傳圖片':'965751411386228736'
-}
+    '上傳圖片':'965751411386228736',
+    '故障位置及具體信息':'965829406364942336'
+    }
 
-templateList =['補充稱呼','咨詢裝置','上傳圖片']
+templateList =['補充稱呼','咨詢裝置','上傳圖片','故障位置及具體信息']
 
 # cache.cached(timeout=100, key_prefix='items')
 @app.route('/webhook', methods=['POST'])
@@ -60,7 +61,7 @@ def webhook_receiver():
     # Process the data and perform actions based on the event   
     print("Received webhook data:", payload)
 
-    if 'content' not in data[0]:
+    if 'content' not in data[0] and '我已明白' not in data[0]['Message'] :
         defaultReplay(data[0]['From'])
         return jsonify({'message':'Replied default message'}), 200
     
