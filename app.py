@@ -46,10 +46,10 @@ templateList =['補充稱呼','咨詢裝置','上傳圖片']
 def webhook_receiver():
     data = request.json 
     print(data)
-    #wtsmsgid = data[0]['MessageId']
+    wtsmsgid = data[0]['MessageId']
     payload=request.get_json()
     print(payload)
-    event_key= payload['MessageId']
+    event_key= wtsmsgid
     if redis_client.exists(event_key):
         return jsonify({'message':'already proceeded'}), 200
     print('send message')
@@ -60,7 +60,7 @@ def webhook_receiver():
     # Process the data and perform actions based on the event   
     print("Received webhook data:", payload)
 
-    EMSDreply, nodeName = getEMSDreplay(payload['From'],payload['Message'])
+    EMSDreply, nodeName = getEMSDreplay(data[0]['From'],data[0]['Message'])
     if nodeName[0]['nodeName'] in templateList:
         handleMsgTemplate(nodeNameTemplate[nodeName[0]['nodeName']],payload['From'])
     else:
