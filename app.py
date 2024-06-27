@@ -65,7 +65,7 @@ def webhook_receiver():
     EMSDreply, nodeName = getEMSDreplay(data[0]['From'],data[0]['Message'].replace('我已明白','維修報障'))
     if nodeName[0]['nodeName'] == '新對話':
         defaultReplay(data[0]['From'])
-    else if nodeName[0]['nodeName'] in templateList:
+    elseif nodeName[0]['nodeName'] in templateList:
         handleMsgTemplate(nodeNameTemplate[nodeName[0]['nodeName']],data[0]['From'])
     else:
         handleMsg(EMSDreply, data[0]['From'])
@@ -176,7 +176,7 @@ def getEMSDreplay(msgFrom,inputMsg):
     #Path("cookies.json").write_text(response.headers['Set-cookie'].split(";")[0].split("'")[0].split("=")[1])
     if "nodeName" in response.json():
         nodeDataJson = [{'nodeName':"維修報障"}]
-    else if response.json['type']==0:
+    elseif response.json['type']==0:
         nodeDataJson = [{'nodeName':"新對話"}]
     else:
         try:
