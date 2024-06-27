@@ -32,24 +32,24 @@ redis_client = redis.Redis(host='redis-18057.c14.us-east-1-3.ec2.redns.redis-clo
 cache = Cache(app, config={'CACHE_TYPE': 'redis', 'CACHE_REDIS_HOST': redis_client})
 cache.init_app(app)
 
-
+#'維修報障':'964527751929401344',
 nodeNameTemplate = {
     '補充稱呼':'965465089543114752',
     '咨詢裝置':'965466943903645696',
-    '維修報障': '964527751929401344'
+    '上傳圖片':'965751411386228736'
 }
 
-templateList =['補充稱呼','咨詢裝置','維修報障']
+templateList =['補充稱呼','咨詢裝置','上傳圖片']
 
 # cache.cached(timeout=100, key_prefix='items')
 @app.route('/webhook', methods=['POST'])
 def webhook_receiver():
     data = request.json 
     print(data)
-    wtsmsgid = data[0]['MessageId']
+    #wtsmsgid = data[0]['MessageId']
     payload=request.get_json()
     print(payload)
-    event_key= wtsmsgid
+    event_key= payload['MessageId']
     if redis_client.exists(event_key):
         return jsonify({'message':'already proceeded'}), 200
     print('send message')
@@ -60,11 +60,11 @@ def webhook_receiver():
     # Process the data and perform actions based on the event   
     print("Received webhook data:", payload)
 
-    EMSDreply, nodeName = getEMSDreplay(data[0]['From'],data[0]['Message'])
+    EMSDreply, nodeName = getEMSDreplay(payload['From'],payload['Message'])
     if nodeName[0]['nodeName'] in templateList:
-        handleMsgTemplate(nodeNameTemplate[nodeName[0]['nodeName']],data[0]['From'])
+        handleMsgTemplate(nodeNameTemplate[nodeName[0]['nodeName']],payload['From'])
     else:
-        handleMsg(EMSDreply, data[0]['From'])
+        handleMsg(EMSDreply, payload['From'])
     return make_response(jsonify({'success':True}),200)
     #return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
 
@@ -168,15 +168,19 @@ def getEMSDreplay(msgFrom,inputMsg):
         redis_client.hset('jkey',msgFrom,response.headers['Set-cookie'].split(";")[0].split("'")[0].split("=")[1])
         redis_client.expire(msgFrom, 259200)
             
+    
     #Path("cookies.json").write_text(response.headers['Set-cookie'].split(";")[0].split("'")[0].split("=")[1])
-    try:
-        nodeData = response.json()['commands'][3]['args'][0]
-        nodeDataJson = json.loads(nodeData)
-    except:
-        nodeDataJson = [{'nodeName':"no"}]
-
     if "nodeName" in response.json():
         nodeDataJson = [{'nodeName':"維修報障"}]
+    else:
+        try:
+            nodeData = response.json()['commands'][3]['args'][0]
+            nodeDataJson = json.loads(nodeData)
+        except:
+            nodeDataJson = [{'nodeName':"no"}]
+
+    #if "nodeName" in response.json():
+        #nodeDataJson = [{'nodeName':"維修報障"}]
     return response.json()['content'], nodeDataJson
 
 
