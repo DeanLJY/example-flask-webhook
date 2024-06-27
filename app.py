@@ -60,14 +60,12 @@ def webhook_receiver():
      # Get the JSON data from the incoming request
     # Process the data and perform actions based on the event   
     print("Received webhook data:", payload)
-
-    if 'content' not in data[0] and '我已明白' not in data[0]['Message'] :
-        defaultReplay(data[0]['From'])
-        return jsonify({'message':'Replied default message'}), 200
     
 
     EMSDreply, nodeName = getEMSDreplay(data[0]['From'],data[0]['Message'].replace('我已明白','維修報障'))
-    if nodeName[0]['nodeName'] in templateList:
+    if nodeName[0]['nodeName'] == '新對話':
+        defaultReplay(data[0]['From'])
+    else if nodeName[0]['nodeName'] in templateList:
         handleMsgTemplate(nodeNameTemplate[nodeName[0]['nodeName']],data[0]['From'])
     else:
         handleMsg(EMSDreply, data[0]['From'])
@@ -178,6 +176,8 @@ def getEMSDreplay(msgFrom,inputMsg):
     #Path("cookies.json").write_text(response.headers['Set-cookie'].split(";")[0].split("'")[0].split("=")[1])
     if "nodeName" in response.json():
         nodeDataJson = [{'nodeName':"維修報障"}]
+    else if resppnse.json['type']==0:
+        nodeDataJson = [{'nodeName':"新對話"}]
     else:
         try:
             nodeData = response.json()['commands'][3]['args'][0]
