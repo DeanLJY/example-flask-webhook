@@ -65,7 +65,7 @@ def webhook_receiver():
         return jsonify({'message':'Replied default message'}), 200
     
 
-    EMSDreply, nodeName = getEMSDreplay(data[0]['From'],data[0]['Message'])
+    EMSDreply, nodeName = getEMSDreplay(data[0]['From'],data[0]['Message'].replace('我已明白','維修報障'))
     if nodeName[0]['nodeName'] in templateList:
         handleMsgTemplate(nodeNameTemplate[nodeName[0]['nodeName']],data[0]['From'])
     else:
