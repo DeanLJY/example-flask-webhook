@@ -45,6 +45,7 @@ templateList =['補充稱呼','咨詢裝置','上傳圖片','故障位置及具�
 # cache.cached(timeout=100, key_prefix='items')
 @app.route('/webhook', methods=['POST'])
 def webhook_receiver():
+    print(request.base_url)
     data = request.json 
     print(data)
     wtsmsgid = data[0]['MessageId']
